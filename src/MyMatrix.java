@@ -18,6 +18,11 @@ public class MyMatrix {
     }
 
 
+    @Override
+    public String toString() {
+        return "{ "+rows+" }";
+    }
+
     public int getRowNumbs() {
         return rowNumbs;
     }

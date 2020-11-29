@@ -11,6 +11,17 @@ public class Column {
     }
 
 
+
+    public Column(){
+
+    }
+
+
+    public void add(double value){
+        this.value+=value;
+    }
+
+
     @Override
     public String toString() {
         return "columnNumber: "+ columnIndex +"  "  +value+"";
