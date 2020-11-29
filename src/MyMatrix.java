@@ -18,6 +18,43 @@ public class MyMatrix {
     }
 
 
+
+    public  MyMatrix getFullRowsMatrix(){
+
+        MyMatrix fullRowsMatrix =this.copy();
+
+        for (int i = 0; i < fullRowsMatrix.getRows().getSize(); i++) {
+            if (fullRowsMatrix.getRows().getElement(i).getColumns().getSize()!=columnNumbs){
+                for (int j = 0; j < fullRowsMatrix.getRows().getElement(i).getColumns().getSize(); j++) {
+                    fullRowsMatrix.getRows().getElement(i).getColumns().getElement(j).setValue(0);
+                }
+            }
+        }
+
+        return fullRowsMatrix;
+    }
+
+
+    public MyMatrix copy(){
+        MyLinkedList<Row> rows = new MyLinkedList<>();
+        for (int i = 0; i < this.getRows().getSize(); i++) {
+            rows.addElement(this.getRows().getElement(i).copy());
+        }
+        MyMatrix copy =new MyMatrix(rowNumbs,columnNumbs,rows);
+        return copy;
+    }
+
+
+
+    public static MyMatrix multiplyMatrix(MyMatrix matrix1 , MyMatrix matrix2){
+        MyMatrix result =new MyMatrix();
+        return result;
+    }
+
+
+
+
+
     @Override
     public String toString() {
         return "{ "+rows+" }";

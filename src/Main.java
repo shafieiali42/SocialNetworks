@@ -3,13 +3,6 @@ import java.util.Scanner;
 public class Main {
 
 
-    public static void resultOfQuestion(int numberOfSubjects,
-                                        MyLinkedList<String> subjectOfQuestions, int deep) {
-
-
-    }
-
-
     public static SocialNetwork mergeSocialNetworks(MyLinkedList<SocialNetwork> socialNetworks,
                                                     MyLinkedList<String> allPeoples,
                                                     MyLinkedList<String> subjects) {
@@ -19,7 +12,7 @@ public class Main {
         }
 
         MyLinkedList<Row> rowsOfInterestMatrix = new MyLinkedList<>();
-        int rowCounter=0;
+        int rowCounter = 0;
 
         for (int i = 0; i < allPeoples.getSize(); i++) {
             Row row = new Row(i, new MyLinkedList<Column>(), allPeoples.getElement(i));
@@ -42,7 +35,7 @@ public class Main {
 
         MyLinkedList<Row> rowsOfFriendShipMatrix = new MyLinkedList<>();
 
-        rowCounter=0;
+        rowCounter = 0;
         for (int i = 0; i < allPeoples.getSize(); i++) {
             Row row = new Row(i, new MyLinkedList<Column>(), allPeoples.getElement(i));
             for (int j = 0; j < socialNetworks.getSize(); j++) {
@@ -65,6 +58,77 @@ public class Main {
 
         SocialNetwork socialNetwork = new SocialNetwork(allPeoples, subjects, interestMatrix, friendShipMatrix);
         return socialNetwork;
+    }
+
+
+    public static MyLinkedList<String> resultOfQuestion(int numberOfSubjects,
+                                                        MyLinkedList<String> subjectOfQuestions,
+                                                        int depth, SocialNetwork socialNetwork,
+                                                        MyLinkedList<String> resultName) {
+
+        MyMatrix oneDepthMatrix;
+        MyMatrix twoDepthMatrix;
+        MyMatrix threeDepthMatrix;
+
+        if (depth == 0) {
+            for (int i = 0; i < socialNetwork.getInterestMatrix().getRows().getSize(); i++) {
+                double result = socialNetwork.getInterestMatrix().getRows().getElement(i).sumOfElements();
+                if (result != 0) {
+                    resultName.addElement(socialNetwork.getPeoples().getElement(i));
+                    System.out.println(socialNetwork.getPeoples().getElement(i) + " " + result);
+                }
+            }
+        } else if (depth == 1) {
+            resultName = resultOfQuestion(numberOfSubjects, subjectOfQuestions, 0, socialNetwork, resultName);
+             oneDepthMatrix = MyMatrix.multiplyMatrix(socialNetwork.getFriendShip(),
+                    socialNetwork.getInterestMatrix().getFullRowsMatrix());
+
+            for (int i = 0; i < oneDepthMatrix.getRows().getSize(); i++) {
+                double result = oneDepthMatrix.getRows().getElement(i).sumOfElements();
+                if (result != 0) {
+                    for (int j = 0; j < resultName.getSize(); j++) {
+                        if (!resultName.getElement(j).equals(socialNetwork.getPeoples().getElement(i))) {
+                            resultName.addElement(socialNetwork.getPeoples().getElement(i));
+                            System.out.println(socialNetwork.getPeoples().getElement(i) + " " + result + " +");
+                        }
+                    }
+                }
+            }
+        }else if (depth==2){
+            resultName = resultOfQuestion(numberOfSubjects, subjectOfQuestions, 1, socialNetwork, resultName);
+             twoDepthMatrix = MyMatrix.multiplyMatrix(socialNetwork.getFriendShip(),
+                    socialNetwork.getInterestMatrix().getFullRowsMatrix());
+
+            for (int i = 0; i < twoDepthMatrix.getRows().getSize(); i++) {
+                double result = twoDepthMatrix.getRows().getElement(i).sumOfElements();
+                if (result != 0) {
+                    for (int j = 0; j < resultName.getSize(); j++) {
+                        if (!resultName.getElement(j).equals(socialNetwork.getPeoples().getElement(i))) {
+                            resultName.addElement(socialNetwork.getPeoples().getElement(i));
+                            System.out.println(socialNetwork.getPeoples().getElement(i) + " " + result + " ++");
+                        }
+                    }
+                }
+            }
+        }else if (depth==3){
+            resultName = resultOfQuestion(numberOfSubjects, subjectOfQuestions, 1, socialNetwork, resultName);
+            threeDepthMatrix = MyMatrix.multiplyMatrix(socialNetwork.getFriendShip(),
+                    socialNetwork.getInterestMatrix().getFullRowsMatrix());
+
+            for (int i = 0; i < threeDepthMatrix.getRows().getSize(); i++) {
+                double result = threeDepthMatrix.getRows().getElement(i).sumOfElements();
+                if (result != 0) {
+                    for (int j = 0; j < resultName.getSize(); j++) {
+                        if (!resultName.getElement(j).equals(socialNetwork.getPeoples().getElement(i))) {
+                            resultName.addElement(socialNetwork.getPeoples().getElement(i));
+                            System.out.println(socialNetwork.getPeoples().getElement(i) + " " + result + " +++");
+                        }
+                    }
+                }
+            }
+        }
+
+        return resultName;
     }
 
 
@@ -167,24 +231,21 @@ public class Main {
             friendShipMatrixList.addElement(friendShipMatrix);
         }
 
-        MyMatrix interestMatrix = mergeSocialNetworks(allNetworks, allPeoples, allSubjects).getInterestMatrix();
-        MyMatrix friendShipMatrix = mergeSocialNetworks(allNetworks, allPeoples, allSubjects).getFriendShip();
+        SocialNetwork socialNetwork = mergeSocialNetworks(allNetworks, allPeoples, allSubjects);
+        MyMatrix interestMatrix = socialNetwork.getInterestMatrix();
+        MyMatrix friendShipMatrix = socialNetwork.getFriendShip();
 
 
-        System.out.println(interestMatrix);
-        System.out.println(friendShipMatrix);
-
-
-//        int numberOfQuestions = myScanner.nextInt();
-//        for (int i = 0; i < numberOfQuestions; i++) {
-//            int numberOfSubject = myScanner.nextInt();
-//            MyLinkedList<String> subjectOfQuestions = new MyLinkedList<>();
-//            for (int j = 0; j < numberOfSubject; j++) {
-//                subjectOfQuestions.addElement(myScanner.next());
-//            }
-//            int deep = myScanner.nextInt();
-//            resultOfQuestion(numberOfSubject, subjectOfQuestions, deep);
-//        }
+        int numberOfQuestions = myScanner.nextInt();
+        for (int i = 0; i < numberOfQuestions; i++) {
+            int numberOfSubject = myScanner.nextInt();
+            MyLinkedList<String> subjectOfQuestions = new MyLinkedList<>();
+            for (int j = 0; j < numberOfSubject; j++) {
+                subjectOfQuestions.addElement(myScanner.next());
+            }
+            int depth = myScanner.nextInt();
+            resultOfQuestion(numberOfSubject, subjectOfQuestions, depth, socialNetwork,new MyLinkedList<>());
+        }
 
 
     }

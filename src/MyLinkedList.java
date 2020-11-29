@@ -14,6 +14,16 @@ public class MyLinkedList<E> {
     }
 
 
+
+//    public MyLinkedList<E> clone(){
+//        MyLinkedList<E> clone = new MyLinkedList<>();
+//        for (int i = 0; i < this.getSize(); i++) {
+//            clone.addElement((E)(this.getElement(i).clone()));
+//        }
+//        return clone;
+//    }
+
+
     public MyLinkedList(Node<E> head) {
         this.head = head;
         this.last = head;

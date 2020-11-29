@@ -17,6 +17,13 @@ public class Column {
     }
 
 
+
+    public Column clone(){
+        Column column =new Column(columnIndex,value,columnName);
+        return column;
+    }
+
+
     public void add(double value){
         this.value+=value;
     }

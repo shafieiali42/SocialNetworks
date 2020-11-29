@@ -15,6 +15,26 @@ public class Row {
     }
 
 
+    public double sumOfElements(){
+        double result =0;
+        for (int i = 0; i < columns.getSize(); i++) {
+            result+=columns.getElement(i).getValue();
+        }
+        return result;
+    }
+
+
+    public Row copy(){
+        MyLinkedList<Column> columnsCopy =new MyLinkedList<>();
+        for (int i = 0; i < columns.getSize(); i++) {
+            Column column =new Column(columnsCopy.getElement(i).getColumnIndex(),
+                    columnsCopy.getElement(i).getValue(),columnsCopy.getElement(i).getColumnName());
+            columnsCopy.addElement(column);
+        }
+        Row row =new Row(rowIndex,columnsCopy,rowName);
+        return row;
+    }
+
     public static Row add(Row row1, Row row2, MyLinkedList<String> columnsName) {
         Row row = new Row();
         row.setRowName(row1.getRowName());

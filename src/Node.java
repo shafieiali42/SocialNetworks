@@ -11,6 +11,12 @@ public class Node<E> {
     }
 
 
+
+//    public Node<E> clone(){
+//        Node<E> node =new Node<>((E)(element.clone()),next)
+//    }
+
+
     @Override
     public String toString() {
         if (next!=null){
