@@ -15,6 +15,23 @@ public class Row {
     }
 
 
+    public Row multipleToNumber(double a){
+        Row row =new Row();
+        row.setRowName(rowName);
+        row.setRowIndex(rowIndex);
+        MyLinkedList<Column> columns =new MyLinkedList<>();
+        for (int i = 0; i < this.getColumns().getSize(); i++) {
+            Column column =new Column();
+            column.setColumnIndex(this.getColumns().getElement(i).getColumnIndex());
+            column.setColumnName(this.getColumns().getElement(i).getColumnName());
+            column.setValue(a*this.getColumns().getElement(i).getValue());
+            columns.addElement(column);
+        }
+        row.setColumns(columns);
+        return row;
+    }
+
+
     public double sumOfElements(){
         double result =0;
         for (int i = 0; i < columns.getSize(); i++) {
@@ -27,13 +44,25 @@ public class Row {
     public Row copy(){
         MyLinkedList<Column> columnsCopy =new MyLinkedList<>();
         for (int i = 0; i < columns.getSize(); i++) {
-            Column column =new Column(columnsCopy.getElement(i).getColumnIndex(),
-                    columnsCopy.getElement(i).getValue(),columnsCopy.getElement(i).getColumnName());
+
+            Column column =new Column(getColumns().getElement(i).getColumnIndex(),
+                    getColumns().getElement(i).getValue(),getColumns().getElement(i).getColumnName());
             columnsCopy.addElement(column);
         }
         Row row =new Row(rowIndex,columnsCopy,rowName);
         return row;
     }
+
+
+    public double getColumnsValueWithIndex(int index){
+        for (int i = 0; i < getColumns().getSize(); i++) {
+            if (getColumns().getElement(i).getColumnIndex()==index){
+                return getColumns().getElement(i).getValue();
+            }
+        }
+        return 0;
+    }
+
 
     public static Row add(Row row1, Row row2, MyLinkedList<String> columnsName) {
         Row row = new Row();
